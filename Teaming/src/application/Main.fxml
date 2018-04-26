@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+   <center>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="list">
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#deleteFromList" text="Löschen" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
+            </ListView>
+            <HBox>
+               <children>
+                  <TextField fx:id="newTeam" onAction="#addToList" />
+                  <Button fx:id="button_add" mnemonicParsing="false" onAction="#addToList" text="Hinzufügen" />
+                  <Button mnemonicParsing="false" onAction="#deleteFromList" text="Löschen" />
+               </children>
+            </HBox>
+            <Separator prefHeight="11.0" prefWidth="287.0" />
+            <ButtonBar prefHeight="40.0" prefWidth="200.0">
+              <buttons>
+                <Button mnemonicParsing="false" onAction="#work" text="Kalkulieren" />
+              </buttons>
+            </ButtonBar>
+         </children>
+      </VBox>
+   </center>
+   <right>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Separator orientation="VERTICAL" prefHeight="465.0" prefWidth="20.0" />
+            <ListView fx:id="info_num" onMouseClicked="#groupSelect_1" prefHeight="465.0" prefWidth="42.0" />
+            <ListView fx:id="info_t1" onMouseClicked="#groupSelect_2" />
+            <ListView fx:id="info_t2" onMouseClicked="#groupSelect_3" />
+         </children>
+      </HBox>
+   </right>
+</BorderPane>
