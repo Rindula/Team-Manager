@@ -1,1 +1,6 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.listings .list-cell  {
+	-fx-border-style: solid;
+	-fx-border-color: transparent transparent black transparent;
+	-fx-border-image-width: 0px 0px 1px 0px;
+}

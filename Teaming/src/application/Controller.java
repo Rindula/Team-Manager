@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.omg.CORBA.portable.ValueOutputStream;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.css.CssMetaData;
+import javafx.css.Styleable;
+import javafx.css.StyleableStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -15,14 +22,18 @@ public class Controller {
 	private TextField newTeam;
 
 	@FXML
-	private ListView<Integer> info_num;
+	private ListView<String> info_num;
 	@FXML
 	private ListView<String> info_t1;
 	@FXML
 	private ListView<String> info_t2;
+	@FXML
+	private ListView<String> info_feld;
 
 	@FXML
 	private Button button_add;
+	@FXML
+	private TextField felder;
 
 	@FXML
 	private ListView<String> list;
@@ -33,7 +44,15 @@ public class Controller {
 
 	@FXML
 	public void initialize() {
-		
+		felder.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue,
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	felder.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
 	}
 
 	@FXML
@@ -58,11 +77,27 @@ public class Controller {
 		info_num.getItems().clear();
 		info_t1.getItems().clear();
 		info_t2.getItems().clear();
+		info_feld.getItems().clear();
+
+		info_num.getItems().add("Spiel");
+		info_t1.getItems().add("Team 1");
+		info_t2.getItems().add("Team 2");
+		info_feld.getItems().add("Feld");
+
+		if (felder.getText().equals("")) {
+			felder.setText("1");
+		}
+
+		int cnt = 0;
 
 		for (int i = 0; i < t.size(); i++) {
-			info_num.getItems().add(i + 1);
+			if ((i%Integer.valueOf(felder.getText())) == 0) {
+				cnt++;
+			}
+			info_num.getItems().add((cnt) + "");
 			info_t1.getItems().add(t.get(i)[0]);
 			info_t2.getItems().add(t.get(i)[1]);
+			info_feld.getItems().add((i%Integer.valueOf(felder.getText()) + 1) + "");
 		}
 
 	}
@@ -81,23 +116,33 @@ public class Controller {
 			list.getItems().remove(list.getSelectionModel().getSelectedIndex());
 		}
 	}
-	
+
 	@FXML
 	public void groupSelect_1() {
 		info_t1.getSelectionModel().select(info_num.getSelectionModel().getSelectedIndex());
 		info_t2.getSelectionModel().select(info_num.getSelectionModel().getSelectedIndex());
+		info_feld.getSelectionModel().select(info_t1.getSelectionModel().getSelectedIndex());
 	}
-	
+
 	@FXML
 	public void groupSelect_2() {
 		info_num.getSelectionModel().select(info_t1.getSelectionModel().getSelectedIndex());
 		info_t2.getSelectionModel().select(info_t1.getSelectionModel().getSelectedIndex());
+		info_feld.getSelectionModel().select(info_t1.getSelectionModel().getSelectedIndex());
 	}
-	
+
 	@FXML
 	public void groupSelect_3() {
 		info_t1.getSelectionModel().select(info_t2.getSelectionModel().getSelectedIndex());
 		info_num.getSelectionModel().select(info_t2.getSelectionModel().getSelectedIndex());
+		info_feld.getSelectionModel().select(info_t2.getSelectionModel().getSelectedIndex());
+	}
+
+	@FXML
+	public void groupSelect_4() {
+		info_t1.getSelectionModel().select(info_feld.getSelectionModel().getSelectedIndex());
+		info_num.getSelectionModel().select(info_feld.getSelectionModel().getSelectedIndex());
+		info_t2.getSelectionModel().select(info_feld.getSelectionModel().getSelectedIndex());
 	}
 
 }
