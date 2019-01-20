@@ -17,6 +17,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 public class Controller {
+	/*
+	 * Variablen für FXML Felder, etc. deklarieren
+	 */
 
 	@FXML
 	private TextField newTeam;
@@ -39,9 +42,14 @@ public class Controller {
 	private ListView<String> list;
 
 	public Controller() {
-		// TODO Auto-generated constructor stub
 	}
 
+	/*
+	 * Sobald das FXML Fenster geladen hat, wird das hier ausgeführt
+	 *
+	 *  Die Funktion fügt einen Eventlistener zu der TextInputbox hinzu, dass alles, außer Zahlen, wieder entfernt werden.
+	 *  Das bewirkt, dass in diesem Feld nur Zahlen stehen können.
+	 */
 	@FXML
 	public void initialize() {
 		felder.textProperty().addListener(new ChangeListener<String>() {
@@ -55,8 +63,12 @@ public class Controller {
 		});
 	}
 
+	/*
+	 * Diese Methode berechnet die Teamzusammensetzung
+	 */
 	@FXML
 	public void work() {
+		// Teams in Variablen speichern, zur weiteren berechnung
 		List<String> l = new ArrayList<>();
 		List<String[]> t = new ArrayList<>();
 
@@ -64,36 +76,43 @@ public class Controller {
 			l.add(list.getItems().get(i));
 		}
 
+		// Die Teams in einem Array abspeichern, sodass jeder gegen jeden Spielt
 		for (int i = 0; i < l.size() - 1; i++) {
 			for (int j = i + 1; j < l.size(); j++) {
 				t.add(new String[] { l.get(i), l.get(j) });
 			}
 		}
 
+		// Durchmischen, damit nicht erst ein Team gegen alle spielt, dann das nächste, usw.
 		for (int i = 0; i < (int) (Math.random() * Integer.MAX_VALUE); i++) {
 			Collections.shuffle(t);
 		}
 
+		// Die Ausgabetabellen leeren, falls etwas drinstehen sollte
 		info_num.getItems().clear();
 		info_t1.getItems().clear();
 		info_t2.getItems().clear();
 		info_feld.getItems().clear();
 
+		// Tabellenköpfe hinzufügen
 		info_num.getItems().add("Spiel");
 		info_t1.getItems().add("Team 1");
 		info_t2.getItems().add("Team 2");
 		info_feld.getItems().add("Feld");
 
+		// Felderanzahl auf 1 setzen, falls das Feld leer sein sollte
 		if (felder.getText().equals("")) {
 			felder.setText("1");
 		}
 
+		// Teams und Felder ausgeben
 		int cnt = 0;
-
 		for (int i = 0; i < t.size(); i++) {
+			// Spiele auf Felder verteilen (Variablen erhöhen)
 			if ((i%Integer.valueOf(felder.getText())) == 0) {
 				cnt++;
 			}
+			// Tabellenzeile hinzufügen
 			info_num.getItems().add((cnt) + "");
 			info_t1.getItems().add(t.get(i)[0]);
 			info_t2.getItems().add(t.get(i)[1]);
@@ -102,6 +121,9 @@ public class Controller {
 
 	}
 
+	/*
+	 * Funktion zum hinzufügen von neuen Teams
+	 */
 	@FXML
 	public void addToList() {
 		if (!newTeam.getText().trim().equals("")) {
@@ -110,12 +132,19 @@ public class Controller {
 		}
 	}
 
+	/*
+	 * Funktion zum löschen von bestehenden Teams
+	 */
 	@FXML
 	public void deleteFromList() {
 		if (!list.getSelectionModel().isEmpty()) {
 			list.getItems().remove(list.getSelectionModel().getSelectedIndex());
 		}
 	}
+
+	/*
+	 * Funktionen zum selektieren der gesamten Tabellenzeile, wenn ein Item angeklickt wurde
+	 */
 
 	@FXML
 	public void groupSelect_1() {
